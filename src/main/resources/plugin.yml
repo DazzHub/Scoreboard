@@ -1,0 +1,4 @@
+name: Scoreboard
+version: ${project.version}
+main: com.dazzhub.scoreboard.Main
+authors: [ DazzHub ]
