@@ -15,6 +15,12 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.security.SecureRandom;
 
+/**
+ * This code has been created by
+ * DazzHub.
+ * Discord: DazzHub#3542
+ */
+
 public final class Main extends JavaPlugin implements Listener {
 
     private Builder builder;

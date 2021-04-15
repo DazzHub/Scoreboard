@@ -5,6 +5,12 @@ import lombok.Setter;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Team;
 
+/**
+ * This code has been created by
+ * DazzHub.
+ * Discord: DazzHub#3542
+ */
+
 @Getter
 @Setter
 public class Entry {

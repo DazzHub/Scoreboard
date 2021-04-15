@@ -7,6 +7,12 @@ import org.bukkit.plugin.Plugin;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * This code has been created by
+ * DazzHub.
+ * Discord: DazzHub#3542
+ */
+
 public class configUtils
 {
     public void saveConfig(Plugin plugin, String configname) {

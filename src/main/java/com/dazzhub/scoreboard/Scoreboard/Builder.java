@@ -9,6 +9,12 @@ import org.bukkit.scoreboard.*;
 
 import java.util.Iterator;
 
+/**
+ * This code has been created by
+ * DazzHub.
+ * Discord: DazzHub#3542
+ */
+
 @Getter
 public class Builder {
 

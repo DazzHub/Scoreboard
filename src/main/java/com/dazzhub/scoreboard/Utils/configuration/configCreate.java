@@ -4,6 +4,12 @@ import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 
+/**
+ * This code has been created by
+ * DazzHub.
+ * Discord: DazzHub#3542
+ */
+
 public class configCreate
 {
     private static configCreate instance;
