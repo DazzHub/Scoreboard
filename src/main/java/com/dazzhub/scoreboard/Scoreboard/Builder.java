@@ -5,18 +5,17 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import lombok.Getter;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.scoreboard.*;
 
-import java.util.*;
+import java.util.Iterator;
 
 @Getter
 public class Builder {
 
     private final Scoreboard scoreboard;
     private final Objective objective;
+
     private final BiMap<Integer, Entry> entries;
-    private final List<String> oldList;
 
     public Builder(String score_name) {
         this.scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
@@ -24,13 +23,24 @@ public class Builder {
         this.objective.setDisplaySlot(DisplaySlot.SIDEBAR);
 
         this.entries = HashBiMap.create();
-        this.oldList = new ArrayList<>();
     }
 
     public void createScore(String name, int value) {
 
-        if (name.length() <= 16) {
-            getObjective().getScore(getEntry(value) + ChatColor.RESET + name).setScore(value);
+        if (name.isEmpty()){
+            objective.getScore(getEntry(value)).setScore(value);
+            return;
+        }
+
+        if (name.length() <= 16){
+            Team team = getScoreboard().registerNewTeam("score-" + value);
+            team.setPrefix(name);
+
+            Score score;
+            score = getObjective().getScore(name);
+            score.setScore(value);
+
+            entries.put(value, new Entry(name, value, team, score));
             return;
         }
 
@@ -51,23 +61,36 @@ public class Builder {
         score.setScore(value);
 
         entries.put(value, new Entry(name, value, team, score));
-        oldList.add(name);
     }
 
-    public void updateScore(String line, int value){
-        if (!oldList.contains(line) && entries.get(value) != null){
+    public void updateScore(String name, int value){
+        if (entries.get(value) != null){
             Entry entryC = entries.get(value);
+
+            if (entryC.getName().equalsIgnoreCase(name)) return;
 
             getScoreboard().resetScores(entryC.getScore().getEntry());
             entryC.getTeam().unregister();
 
+            if (name.length() <= 16){
+                Team team = getScoreboard().registerNewTeam("score-" + value);
+                team.setPrefix(name);
+
+                Score score;
+                score = getObjective().getScore(name);
+                score.setScore(value);
+
+                entries.replace(value, new Entry(name, value, team, score));
+                return;
+            }
+
             Team team = getScoreboard().registerNewTeam("score-" + value);
-            Iterator<String> iterator = Splitter.fixedLength(16).split(line).iterator();
+            Iterator<String> iterator = Splitter.fixedLength(16).split(name).iterator();
 
             team.setPrefix(iterator.next());
             String entry = iterator.next();
 
-            if (line.length() > 32) {
+            if (name.length() > 32) {
                 team.setSuffix(iterator.next());
             }
 
@@ -77,10 +100,7 @@ public class Builder {
             score = getObjective().getScore(entry);
             score.setScore(value);
 
-            oldList.remove(entryC.getName());
-
-            entries.replace(value, new Entry(line, value, team, score));
-            oldList.add(line);
+            entries.replace(value, new Entry(name, value, team, score));
         }
     }
 

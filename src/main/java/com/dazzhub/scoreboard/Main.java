@@ -26,6 +26,7 @@ public final class Main extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
+        /* SIMPLE TESTING SCORE... */
         configCreate.get().setup(this, "Scoreboard");
 
         this.builder = new Builder(randomString());
@@ -43,9 +44,10 @@ public final class Main extends JavaPlugin implements Listener {
             @Override
             public void run() {
 
-                int line = getScoreboard().getStringList("lines").size();
 
                 for (Player p : Bukkit.getOnlinePlayers()){
+                    int line = getScoreboard().getStringList("lines").size();
+
                     for (String s : getScoreboard().getStringList("lines")) {
                         builder.updateScore(charsLobby(p, s), line);
                         line--;
